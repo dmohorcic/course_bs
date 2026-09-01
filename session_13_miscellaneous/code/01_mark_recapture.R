@@ -4,8 +4,7 @@ library(ggplot2)
 library(ggdist)
 library(posterior)
 library(bayesplot)
-library(mcmcse)
-library(HDInterval
+library(HDInterval)
 
 # modelling and data prep ------------------------------------------------------
 model <- cmdstan_model("./session_13_miscellaneous/models/mark_recapture.stan")
@@ -40,7 +39,7 @@ fit$summary()
 # convert samples to data frame
 df <- as_draws_df(fit$draws())
 
-# compare mu1 with mu2
+# plot
 ggplot(data = df) +
   geom_density(aes(x = n), color = NA, fill = "skyblue") +
   xlim(0, 100) +

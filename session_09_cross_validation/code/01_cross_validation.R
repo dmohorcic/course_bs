@@ -7,7 +7,6 @@ library(posterior)
 library(tidyverse)
 library(mcmcse)
 
-
 # data wrangling ---------------------------------------------------------------
 # load the data
 data <- read.csv("./session_09_cross_validation/data/temperature.csv", sep = ";")
@@ -48,11 +47,9 @@ stan_data <- list(
   y_test = y_test
 )
 
-
 # model ------------------------------------------------------------------------
 # compile the model
 model <- cmdstan_model("./session_09_cross_validation/models/polynomial.stan")
-
 
 # polynomial modeling ----------------------------------------------------------
 # max order
@@ -144,7 +141,6 @@ for (p in 0:max_order) {
   }
 }
 
-
 # posterior check --------------------------------------------------------------
 ggplot() +
   geom_point(
@@ -164,7 +160,6 @@ ggplot() +
 
 ggsave("./session_09_cross_validation/figs/cross_validation_posterior.png", width = 12, height = 4)
 
-
 # compare ----------------------------------------------------------------------
 # plot
 ggplot(data = df_mse_train, aes(y = order, x = mse)) +
@@ -182,8 +177,7 @@ ggplot(data = df_mse_test, aes(y = order, x = mse)) +
 df_mse_test %>%
   group_by(order) %>%
   summarize(
-    mean_mse = mcse(mse)$est,
-    mcse_mse = mcse(mse)$se,
+    mean_mse = mean(mse),
     hdi5 = hdi(mse, credMass = 0.90)[1],
     hdi95 = hdi(mse, credMass = 0.90)[2]
   )
